@@ -27,12 +27,21 @@ resource "azurerm_virtual_network" "vnet" {
   resource_group_name = azurerm_resource_group.rg.name
 }
 
-# 3. Subnet
+# 3. Subnets
+## a) Application Subnet
 resource "azurerm_subnet" "subnet" {
   name                 = "subnet-demo"
   resource_group_name  = azurerm_resource_group.rg.name
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefixes     = ["10.0.1.0/24"]
+}
+
+## b) Azure Bastion Subnet (Mandatory name: AzureBastionSubnet)
+resource "azurerm_subnet" "bastion_subnet" {
+  name                 = "AzureBastionSubnet"
+  resource_group_name  = azurerm_resource_group.rg.name
+  virtual_network_name = azurerm_virtual_network.vnet.name
+  address_prefixes     = ["10.0.255.0/27"]
 }
 
 # 4. Public IP for NAT Gateway
